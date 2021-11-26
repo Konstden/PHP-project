@@ -4,7 +4,12 @@
             include __DIR__ . '/../includes/DatabaseConnection.php';
             include __DIR__ . '/../includes/DatabaseFunctions.php';
 
-            InsertJoke($pdo, $_POST['joketext'], 3);
+            $date = new DateTime();
+            insertJoke($pdo,[
+                'authorId' => 1, 
+                'jokeText' => $_POST['joketext'],
+                'jokedate' => new Date()
+            ]);
 
             header('location: joke.php');
         } catch (PDOException $e) {

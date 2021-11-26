@@ -20,8 +20,19 @@
     }
 
     function insertJoke($pdo,$fields) {
-        $query 
+        $query = 'INSERT INTO `joke` (';
 
+        foreach($fields as $key => $value) {
+            $query .= $key . ',';
+        }
+        rtrim($query, ',');
+        $query .= ') VALUES (';
+        foreach($fields as $key => $value) {
+            $query .= ':' . $key . ',';
+        }
+        rtrim($query, ',');
+        $query .= ')';
+        query($pdo, $query, $fields);
     }
 
     function updateJoke($pdo, $fields) {
@@ -61,4 +72,6 @@
         echo '</ul>';
     }
 
+    $date = new DateTime("14 April 2000");
+    echo $date->format('d---m---Y');
 ?>
