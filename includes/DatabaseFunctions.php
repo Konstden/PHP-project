@@ -1,19 +1,15 @@
 <?php
     include_once __DIR__ . '/../includes/DatabaseConnection.php';
 
-    function query($pdo, $sql, $parameters) {
+    function query($pdo, $sql, $parameters = []) {
         $query = $pdo->prepare($sql);
-        foreach ($parameters as $name => $value) {
-            $query->bindValue($name, $value);
-        }
-        
-        $query->execute();
+        $query->execute($parameters);
         return $query;
     }
+
     function totalJokes($pdo) {
-        $parameters = [];
-        $query = query($pdo, 'SELECT COUNT(*) FROM `joke`', $parameters);
-        return $query->fetch[0];
+        $query = query($pdo, 'SELECT COUNT(*) FROM `joke`');
+        return $query->fetch()[0];
     }
 
     function getJoke($pdo, $id) {
@@ -22,4 +18,47 @@
         $query = query($pdo, 'SELECT FROM `joke` WHERE `id`=:id', $parameters);
         return $query->fetch();
     }
+
+    function insertJoke($pdo,$fields) {
+        $query 
+
+    }
+
+    function updateJoke($pdo, $fields) {
+
+        $query = 'UPDATE `joke` SET ';
+        foreach($fields as $key => $value){
+            $query .= '`' . $key . '` = :' . $key . ',';
+        }
+
+        rtrim($query, ',');
+        $query .= ' WHERE `id` = :primaryKey';
+        
+        $fields['primaryKey'] = $fields['id'];
+        query($pdo, $query, $fields);
+    }
+
+    function deleteJoke($pdo, $id) {
+        $parameters = [':id' => $id];
+        $query = query($pdo, 'DELETE FROM `joke` WHERE id=:id', $parameters);
+
+        return $query;
+    }
+
+    function allJokes($pdo) {
+        $jokes = query($pdo, 'SELECT `joke`, `id`, `joketext`
+        , `email`, `name` FROM `joke` INNER JOIN `authorid` = `author`.`id`');
+
+        return $jokes;
+    }
+
+    function fetchAll($pdo){
+        $jokes = allJokes($pdo);
+        echo '<ul>';
+        foreach($jokes as $joke) {
+            echo '<li>' . $joke . '</li>';
+        }
+        echo '</ul>';
+    }
+
 ?>
