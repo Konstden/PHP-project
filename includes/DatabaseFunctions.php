@@ -7,6 +7,14 @@
         return $query;
     }
 
+    function processDates($fields) {
+        foreach($fields as $key => $value) {
+            if ($value instanceof DateTime)
+                $fields[$key] = $value->format('Y-m-d H:i:s');
+        }
+
+        return $fields;
+    }
     function totalJokes($pdo) {
         $query = query($pdo, 'SELECT COUNT(*) FROM `joke`');
         return $query->fetch()[0];
@@ -32,35 +40,35 @@
         }
         rtrim($query, ',');
         $query .= ')';
+        
+        
+        $fields = processDates($fields);
         query($pdo, $query, $fields);
     }
 
-    function updateJoke($pdo, $fields) {
+    function update($pdo, $table, $primaryKey, $fields) {
 
-        $query = 'UPDATE `joke` SET ';
+        $query = 'UPDATE `' . $table . '` SET ';
         foreach($fields as $key => $value){
             $query .= '`' . $key . '` = :' . $key . ',';
         }
 
         rtrim($query, ',');
-        $query .= ' WHERE `id` = :primaryKey';
+        $query .= ' WHERE `' . $primaryKey . '`= :primaryKey';
         
         $fields['primaryKey'] = $fields['id'];
+
+        $fields = processDates($fields);
         query($pdo, $query, $fields);
     }
 
-    function deleteJoke($pdo, $id) {
-        $parameters = [':id' => $id];
-        $query = query($pdo, 'DELETE FROM `joke` WHERE id=:id', $parameters);
-
-        return $query;
-    }
-
     function allJokes($pdo) {
-        $jokes = query($pdo, 'SELECT `joke`, `id`, `joketext`
-        , `email`, `name` FROM `joke` INNER JOIN `authorid` = `author`.`id`');
+        $jokes = query($pdo, 'SELECT `joke`.`id`, `joketext`,`email`, `name`, `jokedate`
+                    FROM `joke` 
+                    INNER JOIN author 
+                    ON `authorid` = `author`.`id`');
 
-        return $jokes;
+        return $jokes->fetchAll();
     }
 
     function fetchAll($pdo){
@@ -72,6 +80,38 @@
         echo '</ul>';
     }
 
-    $date = new DateTime("14 April 2000");
-    echo $date->format('d---m---Y');
+    function findAll($pdo, $table) {
+        $result = query($pdo, 'SELECT * FROM `' . $table . '`');
+
+        return $result->fetchAll();
+    }
+
+    function delete($pdo, $table, $primaryKey, $id) {
+        $parameters = [':id' => $id];
+
+        $query = query($pdo,    'DELETE FROM `' . $table .
+            '` WHERE `' . $primaryKey . '` =:id', $parameters);
+    }
+
+    function insert($pdo, $table, $fields) {
+        $query = 'INSERT INTO `' . $table . '`(';
+
+        foreach($fields as $key => $value) {
+            $query .= $key . ',';
+        }
+
+        rtrim($query, ',');
+        $query .= ') VALUES (';
+        
+        foreach($fields as $key => $value) {
+            $query .= ':' . $key . ',';
+        }
+        
+        rtrim($query, ',');
+        $query .= ')';
+        
+        
+        $fields = processDates($fields);
+        query($pdo, $query, $fields);
+    }
 ?>

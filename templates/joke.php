@@ -7,6 +7,11 @@
             (by <a href="mailto:<?php echo htmlspecialchars($joke['email'], ENT_QUOTES)?>">
             <?=htmlspecialchars($joke['name'], ENT_QUOTES)?></a>)
             <a href="editjoke.php?<?=$joke['id'];?>">EDIT</a>
+            <?php
+                $date = new DateTime($joke['jokedate']);
+
+                echo $date->format('jS F Y')
+            ?>
             <form action="/Book-Project/public/deletejoke.php" method="post">
                 <input type="hidden" name="id" value="<?=$joke['id']?>">
                 <input type="submit" value="Delete">    
@@ -14,4 +19,3 @@
         </p>
     </blockquote>
 <?php endforeach; ?>
-
