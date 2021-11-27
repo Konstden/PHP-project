@@ -3,7 +3,7 @@
         include __DIR__ . '/../includes/DatabaseConnection.php';
         include __DIR__ . '/../includes/DatabaseFunctions.php';
 
-        $result = deleteJoke($pdo, $_GET['id']); 
+        $result = delete($pdo, 'joke', 'id',  $_POST['id']); 
 
         header('location: joke.php');
     } catch (PDOException $e) {

@@ -13,8 +13,8 @@
         <ul>
             <li><a href="">Home</a></li>
             <li><a href="/../Book-Project/public/joke.php">Jokes</a></li>
-            <li><a href="/../Book-Project/templates/addjoke.php">Add a new joke</a></li>
-        </ul>
+            <li><a href="/../Book-Project/templates/editjoke.php">Add a new joke</a></li>
+        </ul> 
     </nav>
     <main>
         <?=$output?>
