@@ -1,10 +1,10 @@
 <?php
     try {
         include __DIR__ . '/../includes/DatabaseConnection.php';
-        include __DIR__ . '/../includes/DatabaseFunctions.php';
+        include __DIR__ . '/../classes/DatabaseTable.php';
 
-        $result = delete($pdo, 'joke', 'id',  $_POST['id']); 
-
+        $jokesTable = new DatabaseTable($pdo, 'joke', 'id');
+        $result = $jokesTable->delete($_POST['id']);        
         header('location: joke.php');
     } catch (PDOException $e) {
         $title = 'An error has occurred';
