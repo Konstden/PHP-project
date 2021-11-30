@@ -8,12 +8,12 @@
     <title><?=$title?></title>
 </head>
 <body>
-    <header><h1>THIS IS THE HEADER</h1></header>
+    <header><h1><?=$title?></h1></header>
     <nav>
         <ul>
             <li><a href="">Home</a></li>
-            <li><a href="/../Book-Project/public/joke.php">Jokes</a></li>
-            <li><a href="/../Book-Project/templates/editjoke.php">Add a new joke</a></li>
+            <li><a href="<?php echo '?list'?>">Jokes</a></li>
+            <li><a href="<?php echo '?edit'?>">Add a new joke</a></li>
         </ul> 
     </nav>
     <main>

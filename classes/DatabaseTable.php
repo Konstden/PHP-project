@@ -34,7 +34,7 @@
     
         public function total()
         {
-            $query = $this->query($this->pdo, 'SELECT COUNT(*) FROM `' . $this->table . '`');
+            $query = $this->query('SELECT COUNT(*) FROM `' . $this->table . '`');
             $row = $query->fetch();
             return $row[0];
         }
@@ -74,7 +74,7 @@
         }
     
         public function findAll() {
-            $result = $this->query($this->pdo, 'SELECT * FROM `' . $this->table . '`');
+            $result = $this->query('SELECT * FROM `' . $this->table . '`');
             
             return $result->fetchAll();
         }
@@ -107,7 +107,7 @@
             echo $query;
             
             $fields = $this->processDates($fields);
-            $this->query($this->pdo, $query, $fields);
+            $this->query($query, $fields);
         }
         
         public function save($record) {
@@ -121,9 +121,3 @@
             }
         }
     }       
-
-    $jokesTable = new DatabaseTable($pdo, 'joke', 'id');
-    $authorsTable = new DatabaseTable($pdo, 'author', 'id');
-
-    print_r($jokesTable->findById(10));
-    print_r($authorsTable->findById(3));

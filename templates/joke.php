@@ -6,7 +6,7 @@
             <?=htmlspecialchars($joke['joketext'], ENT_QUOTES);?>
             (by <a href="mailto:<?php echo htmlspecialchars($joke['email'], ENT_QUOTES)?>">
             <?=htmlspecialchars($joke['name'], ENT_QUOTES)?></a>)
-            <a href="editjoke.php?<?=$joke['id'];?>">EDIT</a>
+            <a href="<?php echo '?edit';?>">EDIT</a>
             <?php
                 $date = new DateTime($joke['jokedate']);
 
