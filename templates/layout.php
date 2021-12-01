@@ -11,9 +11,9 @@
     <header><h1><?=$title?></h1></header>
     <nav>
         <ul>
-            <li><a href="">Home</a></li>
-            <li><a href="<?php echo '?list'?>">Jokes</a></li>
-            <li><a href="<?php echo '?edit'?>">Add a new joke</a></li>
+            <li><a href="index.php">Home</a></li>
+            <li><a href="index.php?action=list">Jokes</a></li>
+            <li><a href="index.php?action=edit">Add a new joke</a></li>
         </ul> 
     </nav>
     <main>

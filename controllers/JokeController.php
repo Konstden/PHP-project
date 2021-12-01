@@ -23,20 +23,24 @@ class JokeController {
                     'email' => $author['email']
                 ];
             }
-
+            print_r($jokes);
             $title = 'Joke List';
             $totaljokes = $this->jokesTable->total();
 
-            ob_start();
-            include __DIR__ . '/../templates/joke.php';
-            $output = ob_get_clean();
-
-            return ['output' => $output, 'title' => $title];
+            return [
+                'template' => 'joke.php',
+                'title' => $title,
+                'variables' => [
+                    'joke' => $joke ?? null,
+                    'jokes' => $jokes ?? null,
+                    'totalJokes' => $totaljokes
+                ]
+            ];
         }
 
         public function delete() {
             $result = $this->jokesTable->delete($_POST['id']);        
-            header('location: joke.php');
+            header('location: index.php');
         }
 
         public function edit() {
@@ -46,7 +50,7 @@ class JokeController {
                 $joke['authorid'] = 1;
                 $this->jokesTable->save($joke);
 
-                header('location: joke.php');
+                header('location: index.php');
             } else {
                 if (isset($_GET['id'])) {
                     $joke = $this->jokesTable->findById($_GET['id']);
@@ -54,12 +58,15 @@ class JokeController {
                     
                 $title = "Edit joke";
 
-                ob_start();
-                include __DIR__ . '/../templates/editjoke.php';
-                $output = ob_get_clean();
             }
 
-            return ['output' => $output, 'title' => $title];
+            return [
+                'template' => 'editjoke.php',
+                'title' => $title,
+                'variables' => [
+                    'joke' => $joke ?? null,
+                ]
+            ];
             
         }
 
@@ -67,10 +74,12 @@ class JokeController {
         public function home() {
             $title = 'Internet Joke Database';
 
-            ob_start();
-            include __DIR__ . '/../templates/home.php';
-            $output = ob_get_clean();
-
-            return ['output' => $output, 'title' => $title];
+            return [
+                'template' => 'home.php',
+                'title' => $title,
+                'variables' => [
+                    'joke' => $joke ?? null
+                ]
+            ];
         }
     }

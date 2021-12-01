@@ -82,7 +82,7 @@
         public function delete($id) {
             $parameters = [':id' => $id];
             
-            $query = $this->query($this->pdo,    'DELETE FROM `' . $this->table .
+            $query = $this->query('DELETE FROM `' . $this->table .
             '` WHERE `' . $this->primaryKey . '` =:id', $parameters);
         }
         

@@ -9,18 +9,16 @@ try {
 
     $jokesController = new JokeController($jokesTable, $authorsTable);
 
-    if (isset($_GET['edit'])) {
-        $page = $jokesController->edit();
-    } elseif (isset($_GET['delete'])) {
-        $page = $jokesController->delete();
-    } elseif (isset($_GET['list'])) {
-        $page = $jokesController->list();
-    } else {
-        $page = $jokesController->home();
-    }
+    $action = $_GET['action'] ?? 'home';
+    echo $action;
+    $page = $jokesController->$action();
 
     $title = $page['title'];
-    $output = $page['output'];
+    $variables = $page['variables'];
+
+    ob_start();
+    include __DIR__ . '/../templates/' . $page['template'];
+    $output = ob_get_clean();
 } catch (PDOException $e) {
     $title = 'An error has occurred';
         $output = 'Database error: ' . $e->getMessage() . ' in '
