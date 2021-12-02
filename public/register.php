@@ -1,29 +1,29 @@
 <?php
-function loadTemplate($templateFileName, $variables = []) {
-    extract($variables);
-
-    ob_start();
-    include __DIR__ . '/../templates/' . $templateFileName;
-
-    return ob_get_clean();
-}
 try {
+    $controllerName = $_GET['controller'] ?? 'joke';
+    
     include __DIR__ . '/../includes/DatabaseConnection.php';
     include __DIR__ . '/../classes/DatabaseTable.php';
-    include __DIR__ . '/../controllers/JokeController.php';
-
-    $jokesTable = new DatabaseTable($pdo, 'joke', 'id');
+    
+    $jokesTable = new DatabaseTable($pdo, 'jokes', 'id');
     $authorsTable = new DatabaseTable($pdo, 'author', 'id');
-
-    $jokesController = new JokeController($jokesTable, $authorsTable);
-
+    
     $action = $_GET['action'] ?? 'home';
-
-    if ($action == strtolower($action)) {
-        $page = $jokeController->$action();
+    
+    
+    if ($action == strlower($action) && 
+    $controllerName == strlower($controllerName)) {
+        $className = ucfirst($controllerName) . 'Controller';
+        
+        include __DIR__ . '/../controllers/' . $className . '.php';
+        
+        $controller = new $className($jokesTable, $authorsTable);
+        $page = $controller->$action();
     } else {
         http_response_code(301); 
-        header('location: index.php?action=' . strtolower($action));
+        header('location: index.php?controller=' .
+        strtolower($controllerName)) . '&action=' . 
+        strtolower($action));
     }
     echo $action;
     $page = $jokesController->$action();
@@ -41,3 +41,4 @@ try {
         . $e->getFile() . ':' . $e->getLine();    
     }
     include __DIR__ . '/../templates/layout.php';
+}

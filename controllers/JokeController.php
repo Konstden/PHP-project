@@ -23,7 +23,6 @@ class JokeController {
                     'email' => $author['email']
                 ];
             }
-            print_r($jokes);
             $title = 'Joke List';
             $totaljokes = $this->jokesTable->total();
 
