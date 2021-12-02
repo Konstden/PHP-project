@@ -1,7 +1,8 @@
 <?php
 try {
-    $controllerName = $_GET['controller'] ?? 'joke';
-    
+    // $controllerName = $_GET['controller'] ?? 'joke';
+    $roude = $_GET['roude'] ?? 'joke/home';
+
     include __DIR__ . '/../includes/DatabaseConnection.php';
     include __DIR__ . '/../classes/DatabaseTable.php';
     
@@ -22,7 +23,7 @@ try {
     } else {
         http_response_code(301); 
         header('location: index.php?controller=' .
-        strtolower($controllerName)) . '&action=' . 
+        strtolower($controllerName)) . '&action=' .x 
         strtolower($action));
     }
     echo $action;

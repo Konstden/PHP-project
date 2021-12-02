@@ -1,4 +1,5 @@
 <?php
+
 function loadTemplate($templateFileName, $variables = []) {
     extract($variables);
 
@@ -10,24 +11,43 @@ function loadTemplate($templateFileName, $variables = []) {
 try {
     include __DIR__ . '/../includes/DatabaseConnection.php';
     include __DIR__ . '/../classes/DatabaseTable.php';
-    include __DIR__ . '/../controllers/JokeController.php';
 
     $jokesTable = new DatabaseTable($pdo, 'joke', 'id');
     $authorsTable = new DatabaseTable($pdo, 'author', 'id');
 
-    $jokesController = new JokeController($jokesTable, $authorsTable);
+    $route = $_GET['route'] ?? 'joke/home';
 
-    $action = $_GET['action'] ?? 'home';
+    if ($route = strtolower($route)) {
+        if ($route == 'joke/list') {
+            include __DIR__ . '/../controllers/JokeController.php';
+            $controller = new JokeController($jokesTable, $authorsTable);
+            $page = $controller->list();
+        
+        } else if ($route == 'joke/home') {
+            include __DIR__ . '/../controllers/JokeController.php';
+            $controller = new JokeController($jokesTable, $authorsTable);
+            $page = $controller->home();
 
-    if ($action == strtolower($action)) {
-        $page = $jokeController->$action();
+        } else if ($route == 'joke/delete') {
+            include __DIR__ . '/../controllers/JokeController.php';
+            $controller = new JokeController($jokesTable, $authorsTable);
+            $page = $controller->delete();
+            
+        } else if ($route == 'joke/edit') {
+            include __DIR__ . '/../controllers/JokeController.php';
+            $controller = new JokeController($jokesTable, $authorsTable);
+            $page = $controller->edit();
+
+        } else if ($route == 'register') {
+            $controller = new RegisterController($jokesTable, $authorsTable);
+            $page = $controller->showForm();
+            include __DIR__ . '/../controllers/RegisterController.php';
+        
+        }
     } else {
-        http_response_code(301); 
-        header('location: index.php?action=' . strtolower($action));
+        http_response_code(301);
+        header('location: index.php?' . strtolower($route));
     }
-    echo $action;
-    $page = $jokesController->$action();
-
     $title = $page['title'];
 
     if (isset($page['variables'])) {
