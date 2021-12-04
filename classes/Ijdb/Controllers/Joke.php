@@ -1,5 +1,8 @@
 <?php
-class JokeController {
+namespace Ijdb\Controllers; 
+use \Ninja\DatabaseTable;
+
+class Joke {
         private $authorsTable;
         private $jokesTable;
 
@@ -39,17 +42,17 @@ class JokeController {
 
         public function delete() {
             $result = $this->jokesTable->delete($_POST['id']);        
-            header('location: index.php');
+            header('location: /joke/list');
         }
 
         public function edit() {
             if (isset($_POST['joke'])) {
                 $joke = $_POST['joke'];
-                $joke['jokedate'] = new DateTime();
+                $joke['jokedate'] = new \DateTime();
                 $joke['authorid'] = 1;
                 $this->jokesTable->save($joke);
 
-                header('location: index.php');
+                header('location: /');
             } else {
                 if (isset($_GET['id'])) {
                     $joke = $this->jokesTable->findById($_GET['id']);

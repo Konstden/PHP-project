@@ -1,7 +1,7 @@
 <?php
 try {
     // $controllerName = $_GET['controller'] ?? 'joke';
-    $roude = $_GET['roude'] ?? 'joke/home';
+    $route = $_GET['roude'] ?? 'joke/home';
 
     include __DIR__ . '/../includes/DatabaseConnection.php';
     include __DIR__ . '/../classes/DatabaseTable.php';
@@ -12,20 +12,27 @@ try {
     $action = $_GET['action'] ?? 'home';
     
     
-    if ($action == strlower($action) && 
-    $controllerName == strlower($controllerName)) {
-        $className = ucfirst($controllerName) . 'Controller';
-        
-        include __DIR__ . '/../controllers/' . $className . '.php';
-        
-        $controller = new $className($jokesTable, $authorsTable);
-        $page = $controller->$action();
-    } else {
-        http_response_code(301); 
-        header('location: index.php?controller=' .
-        strtolower($controllerName)) . '&action=' .x 
-        strtolower($action));
+
+    if ($route == 'joke/list') {
+        include 
     }
+
+
+    
+    // if ($action == strlower($action) && 
+    // $controllerName == strlower($controllerName)) {
+    //     $className = ucfirst($controllerName) . 'Controller';
+        
+    //     include __DIR__ . '/../controllers/' . $className . '.php';
+        
+    //     $controller = new $className($jokesTable, $authorsTable);
+    //     $page = $controller->$action();
+    // } else {
+    //     http_response_code(301); 
+    //     header('location: index.php?controller=' .
+    //     strtolower($controllerName)) . '&action=' .x 
+    //     strtolower($action));
+    // }
     echo $action;
     $page = $jokesController->$action();
 
