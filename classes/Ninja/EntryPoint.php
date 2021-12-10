@@ -1,5 +1,4 @@
 <?php 
-
 namespace Ninja;
 
 class EntryPoint {
@@ -23,7 +22,7 @@ class EntryPoint {
         extract($variables);
         
         ob_start();
-        include __DIR__ . '/../../templates' . $templateFileName;
+        include __DIR__ . '/../../templates/' . $templateFileName;
 
         return ob_get_clean();
     }
@@ -31,14 +30,13 @@ class EntryPoint {
 
     public function run() {
         $page = $this->routes->callAction($this->route);
-
         $title = $page['title'];
-
+        echo $title;
         if (isset($page['variables'])) {
             $output = $this->loadTemplate($page['template'], 
                     $page['variables']);
         } else {
-            $outpute = $this->loadTemplate($page['template']);
+            $output = $this->loadTemplate($page['template']);
         }
 
         include __DIR__ . '/../../templates/layout.php';

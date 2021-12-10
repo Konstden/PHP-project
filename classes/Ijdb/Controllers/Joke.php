@@ -75,7 +75,7 @@ class Joke {
 
         public function home() {
             $title = 'Internet Joke Database';
-
+            echo "in home";
             return [
                 'template' => 'home.php',
                 'title' => $title,
