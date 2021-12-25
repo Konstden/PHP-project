@@ -45,30 +45,34 @@ class Joke {
             header('location: /joke/list');
         }
 
-        public function edit() {
-            if (isset($_POST['joke'])) {
-                $joke = $_POST['joke'];
-                $joke['jokedate'] = new \DateTime();
-                $joke['authorid'] = 1;
-                $this->jokesTable->save($joke);
+        public function saveEdit() {
+            $joke = $_POST['joke'];
+            $joke['jokedate'] = new \DateTime();
+            $joke['authorid'] = 1;
 
-                header('location: /');
+            $this->jokesTable->save($joke);
+            header('location: index.php?route=joke/list');
+        }
+
+
+        public function edit() {
+            if (!$this->authentication->isLoggedIn()) {
+                return ['template' => 'error.php',
+                        'title' => 'You are not authorized to view this page'];
             } else {
                 if (isset($_GET['id'])) {
                     $joke = $this->jokesTable->findById($_GET['id']);
                 }
-                    
+                
                 $title = "Edit joke";
-
+                return [
+                    'template' => 'editjoke.php',
+                    'title' => $title,
+                    'variables' => [
+                        'joke' => $joke ?? null,
+                    ]
+                ];
             }
-
-            return [
-                'template' => 'editjoke.php',
-                'title' => $title,
-                'variables' => [
-                    'joke' => $joke ?? null,
-                ]
-            ];
             
         }
 

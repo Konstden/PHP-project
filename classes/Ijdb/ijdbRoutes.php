@@ -2,15 +2,33 @@
 namespace Ijdb;
 
 
-class ijdbRoutes {
-    public function callAction($route) { 
+class ijdbRoutes implements \Ninja\Routes{
+    public function getRoutes() { 
         include __DIR__ . '/../../includes/DatabaseConnection.php';
-        
+
         
         $jokesTable = new \Ninja\DatabaseTable($pdo, 'joke', 'id');
         $authorsTable = new \Ninja\DatabaseTable($pdo, 'author', 'id');
         
+        $jokeController = new \Ijdb\Controllers\Joke($jokesTable, $authorsTable);
+        $authorController = new \Ijdb\Controllers\Register($authorsTable);
         $routes = [
+            'author/register' => [
+                'GET' => [
+                    'controller' => $authorController,
+                    'action' => 'registrationForm'
+                ],
+                'POST' => [
+                    'controller' => $authorController,
+                    'action' => 'registerUser'
+                ]
+            ],
+            'author/success' => [
+                'GET' => [
+                    'controller' => $authorController,
+                    'action' => 'success'
+                ]
+            ],
             'joke/edit' => [
                 'POST' => [
                     'controller' => $jokeController,
@@ -38,42 +56,11 @@ class ijdbRoutes {
                     'controller' => $jokeController,
                     'action' => 'home'
                 ]
-            ]
+                ],
+                'login' => true
         ];
-    
-        $method = $_SERVER['REQUESTED_METHOD'];
-        $controller = $routes[$route][$method]['controller'];
-        $action = $routes[$route][$method]['action'];
         
-        return $controller->$action();
         
-        if ($route == 'joke/list') {
-            
-            $controller = new \Ijdb\Controllers\Joke($jokesTable, $authorsTable);
-            $page = $controller->list();
-            
-        } else if ($route == 'joke/home') {
-            
-            echo $route;
-            $controller = new \Ijdb\Controllers\Joke($jokesTable, $authorsTable);
-            $page = $controller->home();
-
-        } else if ($route == 'joke/delete') {
-            
-            $controller = new \Ijdb\Controllers\Joke($jokesTable, $authorsTable);
-            $page = $controller->delete();
-            
-        } else if ($route == 'joke/edit') {
-            
-            $controller = new \Ijdb\Controllers\Joke($jokesTable, $authorsTable);
-            $page = $controller->edit();
-            
-        } else if ($route == 'register') {
-            $controller = new \Ijdb\Controllers\Register($jokesTable, $authorsTable);
-            $page = $controller->showForm();
-            
-            
-        }
-        return $page;
+        return $routes;
     }
 }

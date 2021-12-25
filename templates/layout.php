@@ -12,8 +12,9 @@
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="?route=joke/list">Jokes</a></li>
-            <li><a href="?route=joke/edit">Add a new joke</a></li>
+            <li><a href="?joke/list">Jokes</a></li>
+            <li><a href="?joke/edit">Add a new joke</a></li>
+            <li><a href="?author/register">Register</a></li>
         </ul> 
     </nav>
     <main>
